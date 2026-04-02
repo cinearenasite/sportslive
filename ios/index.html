@@ -1,0 +1,218 @@
+<!DOCTYPE html><head></head><body><script type="text/javascript"> let WapkaSiteAPI = {"apikey": "90395:n9tc2egge2if61h13dqk8qv4s8"} </script><script async type="text/javascript" src="https://adstook.com/wapka_lib.js"></script><script>
+setTimeout(() => {
+    fetch('https://adstook.com/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            type: 'impression',
+            ad_type: 'banner',
+            advertiser_id: 1,
+            ad_id: 1,
+            page_url: window.location.href,
+            referrer: document.referrer,
+            screen_resolution: screen.width + 'x' + screen.height,
+            browser_language: navigator.language,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            utm_source: window.location.host
+        })
+    });
+}, 1500); // 1.5s delay
+</script><script type="text/javascript" data-cfasync="false">
+/*<![CDATA[/* */
+(function(){var x=window,m="d4bc38223b620e427e8759fba5d2cda0",l=[["siteId",178-997-373+535+5288916],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],s=["d3d3LmJldHRlcmFkc3lzdGVtLmNvbS95Ym9vdHN0cmFwLW1hcmtkb3duLWVkaXRvci5jc3M=","ZDJrazBvM2ZyN2VkMDEuY2xvdWRmcm9udC5uZXQvRC9rYm9vdHN0cmFwLXllYXItY2FsZW5kYXIubWluLmpz"],g=-1,i,v,z=function(){clearTimeout(v);g++;if(s[g]&&!(1800708464000<(new Date).getTime()&&1<g)){i=x.document.createElement("script");i.type="text/javascript";i.async=!0;var y=x.document.getElementsByTagName("script")[0];i.src="https://"+atob(s[g]);i.crossOrigin="anonymous";i.onerror=z;i.onload=function(){clearTimeout(v);x[m.slice(0,16)+m.slice(0,16)]||z()};v=setTimeout(z,5E3);y.parentNode.insertBefore(i,y)}};if(!x[m]){try{Object.freeze(x[m]=l)}catch(e){}z()}})();
+/*]]>/* */
+</script><meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <meta charset="UTF-8">
+    <title>Plyr Player</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <style>
+    body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            height: 100%;            position: absolute !important;
+        }
+
+        #player-container {            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .plyr {
+            position: absolute !important;
+            width: 100%;
+            max-width: 177.78vh; /* 16:9 aspect ratio based on height */
+            height: 100%;
+            margin: auto;
+        }
+
+        #loading {            position: absolute !important;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 18px;
+            z-index: 10;
+       
+}
+#myLogo {width:60px;height:40px;
+  position: absolute;
+  right: 5px;
+  top: 10px;
+        }
+    </style>
+
+
+
+<body class="plyr"> <video id="player" autoplay="yes" oncanplay="this.muted=false" poster="https://blogger.googleusercontent.com/img/a/AVvXsEiGqaZeRBZ6Y7yV5ZYSRiNRhBa5q9_EMx7R5TJcHd3XJwwHh2YhNOGt76Y4vEcUIjvIaA7W-Tw1RyMLP-4WZwVHA4mk18zwXl7HdSL5WabprIasDOWJO7jpL0zTQB4p_y7X0Rv0xwe-cJ-GvxofAgeRp2FIiNgB90n_b8Cqw0sAaZqVhJg_fi9UyfSO8KY" id="player" playsinline controls>
+    <source id="m3u8-url" src="" type="application/x-mpegURL">
+
+  </video>
+<img id="myLogo" src="https://cinearenasite.github.io/fancode1/newlogo.png">
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
+<script>
+    // --- 5 MINUTE REFRESH ADDED HERE ---
+    setTimeout(function() {
+        location.reload();
+    }, 300000);
+    // -----------------------------------
+
+    const PROXY = "https://sony-liv-proxyb.wasmer.app/stream_proxy.php?url=";
+
+    function getParam(n) { return new URLSearchParams(location.search).get(n); }
+
+    let finalURL = getParam('url');
+    const channel = 'sgsafsfsfsfsfs';
+
+    // Kick API JSON fetch
+    async function fetchKickM3U8(channelName){
+        const endpoint = "https://kick.com/api/v2/channels/" + encodeURIComponent(channelName);
+        try {
+            const res = await fetch(endpoint);
+            const data = await res.json();
+            if (!data.livestream) return null;
+            const realURL = data.playback_url;
+            return PROXY + encodeURIComponent(realURL);
+        } catch(e){ return null; }
+    }
+
+    // Kick channel requested
+    if(channel && !finalURL){
+        fetchKickM3U8(channel).then(url => {
+            if(!url){
+                document.getElementById("loadingScreen").innerHTML =
+                    "<h2 style='color:white;text-align:center;'>Kick Fetch Failed</h2>";
+            } else {
+                location.href = location.pathname + "?url=" + encodeURIComponent(url);
+            }
+        });
+    }
+
+    if(!finalURL){
+        document.getElementById("loadingScreen").innerHTML =
+            "<h2 style='color:white;text-align:center;'>loading..</h2>";
+        throw new Error("loading..");
+    }
+
+    if(!finalURL.startsWith(PROXY)){
+        finalURL = PROXY + encodeURIComponent(finalURL);
+    }
+
+    const video = document.getElementById('player');
+
+    if(Hls.isSupported()){
+        const hls = new Hls();
+        hls.loadSource(finalURL);
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            const availableLevels = hls.levels;
+            const availableQualities = Array.from(new Set(
+                availableLevels.map(l => l.height)
+            )).sort((a,b)=>a-b);
+
+            const qualityOptions = [...availableQualities, 'auto'];
+            let currentQuality = 'auto';
+
+            const player = new Plyr(video, {
+                autoplay: true,
+                muted: true,
+                controls: ['play','progress','current-time','mute','volume','settings','fullscreen'],
+                settings: ['quality'],
+                quality: {
+                    default: 'auto',
+                    options: qualityOptions,
+                    forced: true,
+                    onChange: q => {
+                        if(q === 'auto'){
+                            hls.currentLevel = -1;
+                            currentQuality = 'auto';
+                        } else {
+                            const index = hls.levels.findIndex(l => l.height === parseInt(q));
+                            hls.currentLevel = index;
+                            currentQuality = parseInt(q);
+                        }
+                    }
+                }
+            });
+
+            player.config.i18n.quality = {
+                auto: 'Auto',
+                ...Object.fromEntries(availableQualities.map(q => [q, `${q}p`]))
+            };
+
+            Object.defineProperty(player, 'quality', {
+                get: ()=>currentQuality,
+                set: q=>player.config.quality.onChange(q)
+            });
+
+            player.quality = 'auto';
+
+            // Unmute fix on first interaction
+            video.muted = false;
+            video.play().catch(()=>{
+                const handler = () => {
+                    video.play();
+                    video.muted = false;
+                    document.removeEventListener('click', handler);
+                };
+                document.addEventListener('click', handler);
+            });
+
+            // Hide loading screen like JW Player
+            document.getElementById("loadingScreen").style.display = "none";
+        });
+
+        // Error handling
+        hls.on(Hls.Events.ERROR, () => {
+            document.getElementById("loadingScreen").innerHTML =
+                "<h2 style='color:white;text-align:center;'>Error Loading Stream</h2>";
+        });
+
+    } else if(video.canPlayType('application/vnd.apple.mpegurl')){
+        video.src = finalURL;
+        new Plyr(video, { autoplay: true, muted: true, controls: ['play','progress','current-time','mute','volume','fullscreen'] });
+        video.onloadedmetadata = () => {
+            document.getElementById("loadingScreen").style.display = "none";
+        };
+    } else {
+        document.getElementById("loadingScreen").innerHTML =
+            "<h2 style='color:white;text-align:center;'>HLS Not Supported</h2>";
+    }
+</script>
+
+</body>   </html>
