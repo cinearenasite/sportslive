@@ -1,231 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Willow by CineArena</title>
-  <link rel="icon" type="image/svg+xml" href="https://cinearena.xo.je/images/cinefav.png">
-       
-  <!-- Shaka Player -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nimo TV Player</title>
+<script src="https://concurfortunes.com/1a/db/64/1adb6429863d074435d61fda46d99d51.js"></script>
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      background: #000;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
+<style>
+body {
+  margin: 0;
+  background: #000;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
 
-    .shaka-video-container {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
+.player-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: black;
+}
 
-    video {
-      width: 100%;
-      height: 100%;
-      background: #000;
-      object-fit: contain;
-    }
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
 
-    .shaka-spinner-container,
-    .shaka-spinner,
-    .shaka-spinner-svg {
-      display: none !important;
-      visibility: hidden !important;
-      opacity: 0 !important;
-    }
-
-    /* Blue Controls & Icons */
-    .shaka-controls-button,
-    .shaka-overflow-button-label,
-    .shaka-current-time,
-    .shaka-time-container {
-      color: dark-blue !important;
-    }
-
-    .shaka-controls-button svg path {
-      fill: #1e90ff !important;
-    }
-
-/* Logo overlay - Responsive */
-.video-logo {
+/* Controls */
+.controls {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  opacity: 0.8;
-  z-index: 1000;
-  transition: opacity 0.3s ease;
-  /* Responsive sizing */
-  width: clamp(50px, 12vw, 65px);
-  height: auto;
-  aspect-ratio: 65/20; /* Maintain original aspect ratio */
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
 }
 
-/* Desktop - larger screens */
-@media (min-width: 768px) {
-  .video-logo {
-    width: clamp(65px, 8vw, 80px);
-    top: 15px;
-    left: 15px;
-  }
+.btn {
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  padding: 12px 15px;
+  margin-left: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-/* Large desktop screens */
-@media (min-width: 1200px) {
-  .video-logo {
-    width: clamp(80px, 6vw, 100px);
-    top: 20px;
-    left: 20px;
-  }
+.btn:hover {
+  background: rgba(255,255,255,0.2);
 }
-
-/* Mobile - smaller screens */
-@media (max-width: 480px) {
-  .video-logo {
-    width: clamp(40px, 10vw, 50px);
-    top: 8px;
-    left: 8px;
-  }
-}
-
-/* Very small screens */
-@media (max-width: 320px) {
-  .video-logo {
-    width: clamp(30px, 8vw, 40px);
-    top: 5px;
-    left: 5px;
-  }
-}
-
-.video-logo:hover {
-  opacity: 1;
-}
-  </style>
+</style>
 </head>
 
 <body>
-  <div class="shaka-video-container" data-shaka-player>
-    <video autoplay muted playsinline preload="metadata"
-      poster="https://blogger.googleusercontent.com/img/a/AVvXsEiGqaZeRBZ6Y7yV5ZYSRiNRhBa5q9_EMx7R5TJcHd3XJwwHh2YhNOGt76Y4vEcUIjvIaA7W-Tw1RyMLP-4WZwVHA4mk18zwXl7HdSL5WabprIasDOWJO7jpL0zTQB4p_y7X0Rv0xwe-cJ-GvxofAgeRp2FIiNgB90n_b8Cqw0sAaZqVhJg_fi9UyfSO8KY">
-    </video>
 
-    <!-- Logo Overlay with Telegram Link -->
-    <a href="https://t.me/cine_arena" target="_blank" rel="noopener noreferrer" style="display: block;">
-      <img class="video-logo" src="https://cinearenasite.github.io/fancode2/newlogo.png" alt="cinearena.live">
-    </a>
-  </div>
+<div class="player-container" id="player">
 
-<!-- 🔻 Online Counter (hidden) -->
-<div style="display:none;">
-  <script src="//widget.supercounters.com/ssl/online_t.js"></script>
-  <script>
-    sc_online_t(1707487,"Users Online","170ddb");
-  </script>
-  <noscript><a href="https://www.supercounters.com/">supercounters.com</a></noscript>
+  <iframe 
+    id="nimoFrame"
+    src="https://ipl-cxz-18h.pages.dev/ios?id=hotstar"
+    sandbox="allow-scripts allow-same-origin allow-presentation allow-fullscreen"
+    allow="fullscreen; autoplay"
+    referrerpolicy="no-referrer">
+  </iframe>
+
+ 
+
 </div>
 
+<script>
+// Fullscreen
+function goFullscreen() {
+  let elem = document.getElementById("player");
 
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      shaka.polyfill.installAll();
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+}
 
-      if (!shaka.Player.isBrowserSupported()) {
-        console.error('Browser not supported');
-        return;
-      }
+// Rotate screen (mobile)
+async function rotateScreen() {
+  try {
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock("landscape");
+    } else {
+      alert("Rotation not supported on this device/browser");
+    }
+  } catch (e) {
+    alert("Rotate failed: " + e.message);
+  }
+}
 
-      const video = document.querySelector('video');
-      const player = new shaka.Player();
-      await player.attach(video);
-
-      const container = document.querySelector('.shaka-video-container');
-      const ui = new shaka.ui.Overlay(player, container, video);
-
-      // Blue / Sky Controls
-      ui.configure({
-        controlPanelElements: [
-          'play_pause', 'mute', 'volume', 'time_and_duration',
-          'spacer', 'language', 'captions', 'picture_in_picture',
-          'quality', 'fullscreen'
-        ],
-        volumeBarColors: {
-          base: 'rgba(135, 206, 235, 0.35)',
-          level: 'rgb(255,255,255)'
-        },
-        seekBarColors: {
-          base: 'rgba(50, 55, 61)',
-          buffered: 'rgba(135, 206, 235, 0.6)',
-          played: 'rgb(255, 255, 255)'
-        }
-      });
-
-      // DRM Config
-      const drmConfig = {
-            clearKeys: {  
-          "1e23e51b09a67b83813c17049870bcd4":"c3d6288e378b0dc55320fd0e6fd2e55f" 
-        }  
-      };  
+// Prevent iframe click redirect outside
+document.getElementById("nimoFrame").addEventListener("load", function() {
+  try {
+    const iframeWindow = this.contentWindow;
+    iframeWindow.open = function() {
+      return null;
+    };
+  } catch(e) {
+    // Cross-origin restriction (normal)
+  }
+});
+</script>
   
-      let streamUrl = "https://cors-proxy.cooks.fyi/https://ev-fast-mpd.starzplayarabia.com/live/eds/CricLife1/DASH/CricLife1.mpd";  
-
-
-
-      player.configure({
-        drm: drmConfig,
-        streaming: {
-          lowLatencyMode: true,
-          bufferingGoal: 15,
-          rebufferingGoal: 2,
-          bufferBehind: 15,
-          retryParameters: {
-            timeout: 10000,
-            maxAttempts: 5,
-            baseDelay: 300,
-            backoffFactor: 1.2
-          },
-          segmentRequestTimeout: 8000,
-          segmentPrefetchLimit: 2,
-          useNativeHlsOnSafari: true
-        },
-        manifest: {
-          retryParameters: { timeout: 8000, maxAttempts: 3 }
-        }
-      });
-
-      player.addEventListener('error', (event) => {
-        console.error('Shaka Player Error:', event.detail);
-      });
-
-      try {
-        await player.load(streamUrl);
-        console.log("Stream loaded successfully");
-
-        // 🔥 FORCE AUTOPLAY
-        video.muted = true;
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(err => console.log("Autoplay blocked:", err));
-        }
-
-      } catch (error) {
-        console.error('Load error:', error);
-      }
-
-      // Optional: Unmute on first click
-      document.addEventListener('click', () => {
-        if (video.muted) {
-          video.muted = false;
-          video.volume = 1;
-        }
-      }, { once: true });
-    });
-  </script>
 </body>
 </html>
